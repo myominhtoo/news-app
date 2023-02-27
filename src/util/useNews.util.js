@@ -22,7 +22,8 @@ export default function useNews({
 
     const url = useMemo(() => {
         return useQueryBuilder(API.EVERYTHING)
-                .and('q',q)  
+                .and('q',q)
+                .and('pageSize',pageSize)  
                 .build();
     } , [q,from,pageSize,pageNo]);
 
