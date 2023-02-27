@@ -8,7 +8,7 @@ const initValue = {
     isLoading : false,
     isError : false,
     errorMessage : '',
-    data : [] || {}
+    data : [] 
 }
 
 export default function useNews({
@@ -27,6 +27,10 @@ export default function useNews({
                 .build();
     } , [q,from,pageSize,pageNo]);
 
+    const getNews = async () => {
+        return await axios.get(url);
+    }
+
     const fetchNews = useCallback(async () => {
         // code for fetching
         logger.info('Start Fetching News');
@@ -37,12 +41,12 @@ export default function useNews({
             isLoading : true
         }));
 
-        await axios.get(url)
+            getNews()
             .then( res => {
                 setInfo( prevInfo => ({
                     ...prevInfo,
                     isLoading : false,
-                    data : res.data
+                    data : [ ...prevInfo.data , ...res.data.articles ]
                 }));
             })
             .catch( e => {
@@ -52,16 +56,18 @@ export default function useNews({
                     errorMessage : e
                 }))
             })
-
-        
+  
         logger.info('Done Fetching News')
     } , [url] );
+
+    const fetchMore = 
 
     useEffect(() => {
         fetchNews();
     }, [fetchNews]);
 
     return {
-        ...info
+        ...info,
+        refetchMore : fetchNews
     }
 }

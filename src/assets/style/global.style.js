@@ -19,6 +19,11 @@ const globalStyles = StyleSheet.create({
         color : colors.p_SNOW,
         fontSize : sizes.SM,
         letterSpacing : 1,
+    },
+    title : {
+        color : colors.p_SNOW,
+        fontSize : sizes.MD,
+        opacity : 1
     }
 });
 

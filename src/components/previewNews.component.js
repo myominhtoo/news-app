@@ -39,7 +39,13 @@ export default function PreviewNews({
                 </View>
                 <View style={ styles.titleContainer }>
                     <Text style={ globalStyles.smTitle }>Author  </Text> 
-                    <Text style={ { ...globalStyles.smSnowText , width : '80%' }}>{author}</Text>
+                    <Text style={ { ...globalStyles.smSnowText , width : '80%' }}>
+                        {
+                            author 
+                            ? author.length > 40 ? author.substring(0,40) + '...' : author
+                            : 'Anonymous'
+                        }
+                    </Text>
                 </View>
                 <Text style={ styles.titleContainer } >
                     <Text style={ globalStyles.smTitle } >Source  </Text> 
