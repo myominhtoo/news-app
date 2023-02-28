@@ -8,14 +8,15 @@ const initValue = {
     isLoading : false,
     isError : false,
     errorMessage : '',
-    data : [] 
+    data : [] ,
+    isMoreFetching : false
 }
 
 export default function useNews({
     q = 'everything',
     from ,
     pageSize = 10,
-    pageNo = 1
+    pageNo = 5
 }){
     const [ info , setInfo ] = useState(initValue);
     const logger = useLogger('useNews Function line 17');
@@ -23,7 +24,9 @@ export default function useNews({
     const url = useMemo(() => {
         return useQueryBuilder(API.EVERYTHING)
                 .and('q',q)
-                .and('pageSize',pageSize)  
+                .and('pageSize',pageSize)
+                .and('page',pageNo)
+                .and('sortBy','popularity')
                 .build();
     } , [q,from,pageSize,pageNo]);
 
@@ -40,7 +43,6 @@ export default function useNews({
             ...prevInfo , 
             isLoading : true
         }));
-
             getNews()
             .then( res => {
                 setInfo( prevInfo => ({
@@ -50,24 +52,50 @@ export default function useNews({
                 }));
             })
             .catch( e => {
+                console.log(e)
                 setInfo( prevInfo => ({
                     ...prevInfo,
+                    isLoading : false,
                     isError : true,
                     errorMessage : e
                 }))
             })
   
         logger.info('Done Fetching News')
-    } , [url] );
+    } , [] );
 
-    const fetchMore = 
-
+    const fetchMore = () => {
+        console.log(url);
+        if(info.isMoreFetching ) return;
+        setInfo( prevInfo => {
+            return { ...prevInfo , isMoreFetching : true }
+        });
+        getNews()
+        .then( res => {
+            setInfo( prevInfo => {
+                return ({ 
+                    ...prevInfo ,
+                    isError : false,
+                    isMoreFetching : false ,
+                    data : [ ...prevInfo.data , ...res.data.articles ]
+                });
+            });
+        })
+        .catch( () => {
+            setInfo( prevInfo => ({
+                ...prevInfo ,
+                isMoreFetching : false,
+                isError : true
+            }));
+        })
+    }
+    
     useEffect(() => {
         fetchNews();
     }, [fetchNews]);
 
     return {
         ...info,
-        refetchMore : fetchNews
+        fetchMore
     }
 }
