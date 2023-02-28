@@ -20,8 +20,16 @@ export default function NewsDetailsScreen({
         pageSize : 1
     });
 
+
     if( isLoading ) return <Loading />
-    if( !data[0] ) return <HomeScreen />;
+    if(  !isLoading && !data[0] ) {
+        console.log(data)
+        return (
+          <View>
+            <Text style={ { textAlign : 'center', color : colors.p_SNOW  }}>Server Error!</Text>
+          </View>
+        )
+    }
 
     return (
         <View style={ styles.container } >
@@ -36,8 +44,8 @@ export default function NewsDetailsScreen({
                     {data[0].title}
                 </Text>
                 <View style={ { width : '100%' , color : colors.p_SNOW , display : 'flex' , flexDirection : 'row'  } }>
-                  <Text style={globalStyles.smSnowText}>Author :</Text>
-                  <Text style={globalStyles.smSnowText}>{data[0].author}</Text>            
+                  <Text style={globalStyles.smSnowText}>Source - </Text>
+                  <Text style={globalStyles.smSnowText}>{data[0].source.name}</Text>            
                 </View>
             </View>
             <View style={ styles.contentContainer } >
