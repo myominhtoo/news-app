@@ -15,13 +15,15 @@ export default function PreviewNews({
     category = 'Category',
     source = 'Source' ,
     author = 'Lio',
-    index = 0
+    index = 0,
+    onPress
 }){
 
     if( imageUri == null) return null;
     const currentComponent = useMemo(() => {
         return (
             <TouchableOpacity
+                onPress={onPress}
                 style={[styles.container,styles.shadow]}
             >
                 <View style={styles.imageContainer} >

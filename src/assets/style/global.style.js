@@ -24,6 +24,18 @@ const globalStyles = StyleSheet.create({
         color : colors.p_SNOW,
         fontSize : sizes.MD,
         opacity : 1
+    },
+    thmTitle : {
+        color : colors.THM,
+        fontSize : sizes.LG,
+        fontWeight : 'bold',
+        letterSpacing : 1,
+        marginVertical : 10
+    },
+    mdSnowText : {
+        color : colors.p_SNOW,
+        fontSize : sizes.SM,
+        letterSpacing : 0.9,
     }
 });
 

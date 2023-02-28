@@ -5,7 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import Loading from "../components/loading.component";
 import globalStyles from "../assets/style/global.style";
 
-export default function HomeScreen(){
+export default function HomeScreen({
+    navigation 
+}){
 
     const buttonHideBarRef = useRef();
     const intersectionObserverRef = useRef();
@@ -43,6 +45,7 @@ export default function HomeScreen(){
                     imageUri={item.urlToImage}
                     source={item.source.name}
                     author={item.author}
+                    onPress={() => navigation.navigate('DetailsScreen',{ title : item.title , page : pageNo })}
                  />
              )}
              onEndReached={onReachedEndList}
